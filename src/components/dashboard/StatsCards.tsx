@@ -1,8 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, Zap, Wind, Sun } from "lucide-react";
+import { Project } from "@/data/mockData";
 
 interface StatsCardsProps {
-  projects: any[];
+  projects: Project[];
 }
 
 export const StatsCards = ({ projects }: StatsCardsProps) => {

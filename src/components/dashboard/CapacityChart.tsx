@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { Project } from "@/data/mockData";
 
 interface CapacityChartProps {
-  projects: any[];
+  projects: Project[];
 }
 
 export const CapacityChart = ({ projects }: CapacityChartProps) => {

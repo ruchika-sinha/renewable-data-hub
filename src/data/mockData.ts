@@ -122,4 +122,18 @@ export const mockProjects = [
   }
 ];
 
-export type Project = typeof mockProjects[0];
+export interface Project {
+  id: string;
+  nrel_id?: string;
+  name: string;
+  type: string;
+  capacity: number;
+  location: string;
+  status: string;
+  year: number;
+  developer: string;
+  latitude?: number;
+  longitude?: number;
+  created_at?: string;
+  updated_at?: string;
+}

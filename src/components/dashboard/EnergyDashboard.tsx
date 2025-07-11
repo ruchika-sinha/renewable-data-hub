@@ -1,10 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { DashboardHeader } from "./DashboardHeader";
 import { StatsCards } from "./StatsCards";
 import { FilterControls } from "./FilterControls";
 import { CapacityChart } from "./CapacityChart";
 import { ProjectCard } from "./ProjectCard";
-import { mockProjects, Project } from "../../data/mockData";
+import { useProjects } from "../../hooks/useProjects";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, Loader2 } from "lucide-react";
 
 export const EnergyDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,9 +14,12 @@ export const EnergyDashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [sortBy, setSortBy] = useState("name");
 
+  // Use the projects hook for real API data
+  const { projects, loading, error, hasMore, loadMore, refreshProjects, totalProjects } = useProjects();
+
   // Filter and sort projects
   const filteredProjects = useMemo(() => {
-    let filtered = mockProjects.filter((project) => {
+    let filtered = projects.filter((project) => {
       const matchesSearch = project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            project.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            project.developer.toLowerCase().includes(searchQuery.toLowerCase());
@@ -43,7 +48,22 @@ export const EnergyDashboard = () => {
     });
 
     return filtered;
-  }, [searchQuery, selectedType, selectedStatus, sortBy]);
+  }, [projects, searchQuery, selectedType, selectedStatus, sortBy]);
+
+  // Infinite scrolling
+  const handleScroll = useCallback(() => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
+      return;
+    }
+    if (hasMore) {
+      loadMore();
+    }
+  }, [hasMore, loading, loadMore]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   const hasActiveFilters = searchQuery !== "" || selectedType !== "all" || selectedStatus !== "all";
 
@@ -62,9 +82,27 @@ export const EnergyDashboard = () => {
       />
       
       <main className="p-4 lg:p-6 max-w-7xl mx-auto">
-        <StatsCards projects={mockProjects} />
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-bold">Renewable Energy Projects</h2>
+            <p className="text-muted-foreground">
+              {totalProjects > 0 && `${totalProjects} projects loaded from NREL API`}
+            </p>
+          </div>
+          <Button 
+            onClick={refreshProjects} 
+            disabled={loading}
+            variant="outline"
+            className="gap-2"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+            Refresh Data
+          </Button>
+        </div>
+
+        <StatsCards projects={projects} />
         
-        <CapacityChart projects={mockProjects} />
+        <CapacityChart projects={projects} />
         
         <FilterControls
           searchQuery={searchQuery}
@@ -85,11 +123,30 @@ export const EnergyDashboard = () => {
           ))}
         </div>
         
-        {filteredProjects.length === 0 && (
+        {/* Loading indicator for infinite scroll */}
+        {loading && (
+          <div className="flex justify-center items-center py-8">
+            <Loader2 className="w-8 h-8 animate-spin" />
+            <span className="ml-2">Loading more projects...</span>
+          </div>
+        )}
+        
+        {/* Load more button as fallback */}
+        {!loading && hasMore && filteredProjects.length > 0 && (
+          <div className="flex justify-center mt-8">
+            <Button onClick={loadMore} variant="outline" className="gap-2">
+              Load More Projects
+            </Button>
+          </div>
+        )}
+        
+        {filteredProjects.length === 0 && !loading && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-xl font-semibold mb-2">No projects found</h3>
-            <p className="text-muted-foreground">Try adjusting your filters or search terms</p>
+            <p className="text-muted-foreground">
+              {error ? `Error: ${error}` : "Try adjusting your filters or search terms"}
+            </p>
           </div>
         )}
       </main>

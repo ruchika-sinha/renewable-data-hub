@@ -4,6 +4,7 @@ import { MapPin, Zap, Calendar, Building } from "lucide-react";
 
 interface Project {
   id: string;
+  nrel_id?: string;
   name: string;
   type: string;
   capacity: number;
@@ -11,6 +12,10 @@ interface Project {
   status: string;
   year: number;
   developer: string;
+  latitude?: number;
+  longitude?: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface ProjectCardProps {

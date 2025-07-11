@@ -44,6 +44,54 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          capacity: number | null
+          created_at: string
+          developer: string | null
+          id: string
+          latitude: number | null
+          location: string | null
+          longitude: number | null
+          name: string
+          nrel_id: string | null
+          status: string | null
+          type: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          capacity?: number | null
+          created_at?: string
+          developer?: string | null
+          id?: string
+          latitude?: number | null
+          location?: string | null
+          longitude?: number | null
+          name: string
+          nrel_id?: string | null
+          status?: string | null
+          type: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          capacity?: number | null
+          created_at?: string
+          developer?: string | null
+          id?: string
+          latitude?: number | null
+          location?: string | null
+          longitude?: number | null
+          name?: string
+          nrel_id?: string | null
+          status?: string | null
+          type?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

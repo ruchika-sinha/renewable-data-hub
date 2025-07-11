@@ -169,21 +169,6 @@ The application integrates with the National Renewable Energy Laboratory (NREL) 
 - **Input Validation** - Comprehensive data validation
 - **Audit Logging** - Track user actions and system events
 
-## 🚀 Deployment
-
-This project is built with Lovable and can be deployed with one click!
-
-### Quick Deployment
-Simply open [Lovable](https://lovable.dev/projects/5d435ced-3690-4b69-a037-a885844873ab) and click on Share → Publish.
-
-### Custom Domain
-Yes, you can connect a custom domain! Navigate to Project → Settings → Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
 
 ### Development Workflow
 1. Fork the repository
@@ -202,12 +187,6 @@ We welcome contributions! Here's how you can help:
 
 This project is licensed under the MIT License.
 
-## 🙏 Acknowledgments
-
-- **NREL** - For providing comprehensive renewable energy data
-- **Supabase** - For the excellent backend-as-a-service platform
-- **shadcn/ui** - For the beautiful and accessible UI components
-- **Lovable** - For making development fast and enjoyable
 
 ## 🗺️ Project Roadmap
 
